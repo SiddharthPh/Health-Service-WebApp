@@ -1,0 +1,39 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<!-- <button type="button" class="btn btn-primary">Patients_Portal</button>
+<button type="button" class="btn btn-secondary">Physicians_Portal</button>
+<button type="button" class="btn btn-success">Doctor_Portal</button> -->
+
+<div class="row" style="margin-top: 100px;">
+    <div class="col-sm-4">
+      <div class="card" style="margin-right: 10%;margin-left: 5%;">
+        <img class="card-img-top" src="../../static/accounts/images/news-image3.jpg" alt="Card image cap" style="display: block; width: auto ;height: 200px;">
+        <div class="card-body">
+          <h5 class="card-title">Patients_Portal</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="{% url 'loginp'%}" class="btn btn-primary">Click Here</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card" style="margin-right: 10%;margin-left: 0%">
+        <img class="card-img-top" src="../../static/accounts/images/news-image1.jpg" alt="Card image cap" style="display: block; width: auto ;height: 200px;">
+        <div class="card-body">
+          <h5 class="card-title">Physicians_Portal</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-dark">Click Here</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card"style="margin-right: 10%;margin-left: 0%;">
+            <img class="card-img-top" src="../../static/accounts/images/news-image2.jpg" alt="Card image cap" style="display: block; width: auto ;height: 200px;">
+            <div class="card-body">
+            <h5 class="card-title">Doctor_Portal</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-success">Click Here</a>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endblock %}
