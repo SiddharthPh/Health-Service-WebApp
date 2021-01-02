@@ -5,7 +5,7 @@ from django.contrib import messages
 from accounts.views import *
 
 # Create your views here.
-@login_required(login_url='loginp')
+# @login_required(login_url='loginp')
 def patient_home(request):
     patient_name=request.session.get('patient_name')
     patient_email=request.session.get('patient_email')

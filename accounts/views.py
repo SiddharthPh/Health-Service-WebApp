@@ -83,7 +83,7 @@ def loginp_check(request):
                 patient_obj=Patient.objects.all().get(email=email)
                 patient_profile_obj=patient_profile.objects.all().get(patient_user=patient_obj)
                 # current_patient=patient_profile_obj
-                # messages.error(request,'Success')
+                messages.error(request,'Success')
                 # strdata=serialize('json',patient_profile.objects.all(),cls=LazyEncoder)
                 # data=json.loads(strdata)
                 request.session['patient_name']=patient_profile_obj.patient_user.name
