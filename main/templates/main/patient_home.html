@@ -249,8 +249,11 @@
         <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate">Pulse Rate</button>
         <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation">Oxygen Saturation</button>
         <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate">Respiration Rate</button>
-        <button class="btn btn-sm btn-outline-secondary" id="ECG" name="ECG">ECG</button>
-        <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb">Hb</button>
+        <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal_ECG" onclick="ecg()">
+          <span data-feather="calendar"></span>
+          ECG
+        </button>       
+         <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb">Hb</button>
       </div>
       <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal">
         <span data-feather="calendar"></span>
@@ -281,6 +284,43 @@
         <!-- Modal body -->
         <div class="modal-body">
           <canvas class="my-4 w-100" id="myChart1" width="90%" height="10%"></canvas>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="myModal_ECG">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <!-- <div class="btn-toolbar mb-2 mb-md-0">  -->
+            <!-- <div class="btn-group mr-2" style="display:flex">
+              <button class="btn btn-sm btn-outline-secondary" id="Temperature1" name="Temperature" onclick="temp1()">Temp</button>
+              <button class="btn btn-sm btn-outline-secondary" id="bmi1" name="bmi" onclick="bmi1()">BMI</button>
+              <button class="btn btn-sm btn-outline-secondary" id="bloodpressure1" name="bloodpressure" onclick="bloodp1()">BP</button>
+              <button class="btn btn-sm btn-outline-secondary" id="Skin_conductance1" name="Skin_conductance">Skin Cond</button>
+              <button class="btn btn-sm btn-outline-secondary" id="pulse_rate1" name="pulse_rate">Pulse Rate</button>
+              <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation1" name="oxygen_saturation">O2 Sat</button>
+              <button class="btn btn-sm btn-outline-secondary" id="respiration_rate1" name="respiration_rate">RR</button>
+              <button class="btn btn-sm btn-outline-secondary" id="ECG1" name="ECG">ECG</button>
+              <button class="btn btn-sm btn-outline-secondary" id="Hb1" name="Hb">Hb</button>
+              </div> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <canvas id="myChart_1" width="20%" height="10%"></canvas>
+          <canvas id="myChart_2" width="30%" height="10%"></canvas>
+          <canvas id="myChart_3" width="30%" height="10%"></canvas>
+
         </div>
         
         <!-- Modal footer -->
