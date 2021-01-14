@@ -3060,7 +3060,7 @@ function ecg(){
           lineTension: 0.5,
           backgroundColor: 'transparent',
           borderColor: '#007bff',
-          borderWidth: 1.5,
+          borderWidth: 1.5  ,
           pointBackgroundColor: '#007bff'
         }]
       },

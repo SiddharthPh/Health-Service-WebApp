@@ -200,7 +200,7 @@
       <div class="sidebar-sticky">
       <img src="../../../media/patient_pics/default.jpg" class="ronded-circle account-img" alt="Person" style="width:70%; margin-left: 30px;margin-top: 50px;">
       <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span style="text-align:center;">{{patient_name}}</span>
+        <span style="text-align:center;">Name:  {{patient_name}}</span>
         <a class="d-flex align-items-center text-muted" href="#">
           <span data-feather="plus-circle"></span>
         </a>
@@ -217,19 +217,37 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
-              {{patient_email}}
+              Email:  {{patient_email}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text">City:  {{patient_address}}</span>
+              
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
-              {{patient_address}}
+              Phone:  {{patient_phone}}
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
-              {{patient_phone}}
+              Height:  {{patient_height}}cms
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Weight:  {{patient_weight}}kgs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Gender:  {{patient_gender}}
             </a>
           </li>
         </ul>
@@ -406,8 +424,132 @@
   </div>
    -->
 
+</div>
+<div class="row">
+  <div class="col-md-6 order-md-1" style="margin-bottom: 100px;margin-top: 50px;">
+    <div class="card">
+  <h5 class="card-header">Appointment Form</h5>
+  <div class="card-body">
+  <form class="needs-validation" novalidate action="{% url 'appointment' %}" method="POST" >
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-5 mb-1">
+        <label for="firstName">Full name</label>
+        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="" value="" required>
+        <div class="invalid-feedback">
+          Valid full name is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="username">Email</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">@</span>
+        </div>
+        <input type="text" class="form-control" id="username" name="email" placeholder="Username" required>
+        <div class="invalid-feedback" style="width: 100%;">
+          Your username is required.
+        </div>
+      </div>
+      
+    </div>
+    <div class="form-group">
+      <label for="inputState">Schedule Time</label>
+      <select id="schedule" name="schedule_time" class="form-control" required>
+        <option selected>9AM-10AM</option>
+        <option selected>11AM-12PM</option>
+        <option selected>1PM-2PM</option>
+        <option selected>3PM-4PM</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="scheduledate">Date:</label>
+      <input type="date" id="date" name="schedule_date">
+    </div>
+
+    <div class="form-group">
+      <label for="inputState">Doctors</label>
+      <select id="doctors" name="doctors" class="form-control" required>
+        {% for doctor in doctors %}
+        <option value="{{ doctor.email }}">{{ doctor.name }}[{{doctor.profession}}]({{doctor.email}})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="Message">Message:</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="message" rows="3"></textarea>
+    </div>
+    
+
+    <hr class="mb-4">
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to Review</button>
+  </form>
   </div>
-</main>
+  </div>
+</div>
+  <div class="col-md-6 order-md-2" style="margin-bottom: 100px;margin-top: 50px;">
+    <div class="card">
+      <h5 class="card-header">Medical History</h5>
+      {% if medical_history_obj %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-5 mb-1">
+            <input type="hidden" name="patient_email" value={{patient_email}}>
+
+            <label for="drug_allergies">Drug Allergies</label>
+            <textarea class="form-control" id="drugallergies" name="drugallergies" rows="3">{{medical_history_obj.drugallergies}}</textarea>
+          </div>
+    
+          <div class="col-md-5 mb-1">
+            <label for="drug_allergies">All Illness</label>
+            <textarea class="form-control" id="allillness" name="allillness" rows="3">{{medical_history_obj.all_illness}}</textarea>
+          </div>
+          <div class="col-md-5 mb-1">
+            <label for="drug_allergies">All Operations</label>
+            <textarea class="form-control" id="alloperations" name="alloperations" rows="3">{{medical_history_obj.all_operations}}</textarea>
+          </div>
+          <div class="col-md-5 mb-1">
+            <label for="drug_allergies">Current Medication</label>
+            <textarea class="form-control" id="current_medication" name="current_medication" rows="3">{{medical_history_obj.current_medication}}</textarea>
+          </div>        
+        </div>
+      </div>
+      {% else %}
+      <div class="card-body">
+        <form class="needs-validation" novalidate action="{% url 'medical_history_check' %}" method="POST" >
+          {% csrf_token %}
+          <div class="row">
+              <input type="hidden" name="patient_email" value={{patient_email}}>
+              <div class="col-md-5 mb-1">
+              <label for="drug_allergies">Drug Allergies</label>
+              <textarea class="form-control" id="drugallergies" name="drugallergies" rows="3"></textarea>
+            </div>
+      
+            <div class="col-md-5 mb-1">
+              <label for="drug_allergies">All Illness</label>
+              <textarea class="form-control" id="allillness" name="allillness" rows="3"></textarea>
+            </div>
+            <div class="col-md-5 mb-1">
+              <label for="drug_allergies">All Operations</label>
+              <textarea class="form-control" id="alloperations" name="alloperations" rows="3"></textarea>
+            </div>
+            <div class="col-md-5 mb-1">
+              <label for="drug_allergies">Current Medication</label>
+              <textarea class="form-control" id="current_medication" name="current_medication" rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+
+        </form>
+        
+      </div>
+        {% endif %}
+      </div>
+  </div>
+</div>
+ 
+  </main>
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
   <script src="../../static/main/js/dashboard.js"></script>
@@ -418,6 +560,8 @@
       });
     });
     </script> -->
+  
+
 
 
 {% endblock %}

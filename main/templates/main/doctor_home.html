@@ -1,0 +1,335 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<!-- <button type="button" class="btn btn-primary">Patients_Portal</button>
+<button type="button" class="btn btn-secondary">Physicians_Portal</button>
+<button type="button" class="btn btn-success">Doctor_Portal</button> -->
+  <!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"> -->
+<!-- Google Fonts -->
+<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"> -->
+<!-- Bootstrap core CSS -->
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"> -->
+<!-- Material Design Bootstrap -->
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script> -->
+<style>
+  body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Content
+ */
+
+[role="main"] {
+  padding-top: 48px; /* Space for fixed navbar */
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+</style>
+<!-- <div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span data-feather="home"></span>
+              Dashboard <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file"></span>
+              Orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="shopping-cart"></span>
+              Products
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="users"></span>
+              Customers
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="bar-chart-2"></span>
+              Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+              Integrations
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Saved reports</span>
+          <a class="d-flex align-items-center text-muted" href="#">
+            <span data-feather="plus-circle"></span>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Current month
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Last quarter
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Social engagement
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Year-end sale
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div> -->
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+      <img src="../../../media/patient_pics/default.jpg" class="ronded-circle account-img" alt="Person" style="width:70%; margin-left: 30px;margin-top: 50px;">
+      <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+        <span style="text-align:center;">{{doctor_name}}</span>
+        <a class="d-flex align-items-center text-muted" href="#">
+          <span data-feather="plus-circle"></span>
+        </a>
+      </h5>
+
+        
+        <ul class="nav flex-column mb-2">
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Current month
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              {{doctor_email}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              {{doctor_address}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              {{doctor_phone}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" >
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="margin-top: 50px;">
+    <h1 class="h2">Reading Summary</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2" style="display:flex">
+        <button class="btn btn-sm btn-outline-secondary" id="Temperature" name="Temperature" onclick="temp()">Temperature</button>
+        <button class="btn btn-sm btn-outline-secondary" id="bmi" name="bmi" onclick="bmi()">BMI</button>
+        <button class="btn btn-sm btn-outline-secondary" id="bloodpressure" name="bloodpressure" onclick="bloodp()">BP</button>
+        <button class="btn btn-sm btn-outline-secondary" id="Skin_conductance" name="Skin_conductance">Skin Conductance</button>
+        <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate">Pulse Rate</button>
+        <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation">Oxygen Saturation</button>
+        <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate">Respiration Rate</button>
+        <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal_ECG" onclick="ecg()">
+          <span data-feather="calendar"></span>
+          ECG
+        </button>       
+         <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb">Hb</button>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal">
+        <span data-feather="calendar"></span>
+        View More
+      </button>
+    </div>
+  </div>
+  <canvas class="my-4 w-100" id="myChart" width="90%" height="25%"></canvas>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Appointment Requests</h5>
+          {% if appointment_obj %}
+          <div class="card-body">
+            {% for obj in appointment_obj %}
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">Patient Email:  {{obj.from_patient_email}}</li>
+            <li class="list-group-item">Time:  {{obj.time}}</li>
+            <li class="list-group-item">Date:  {{obj.date}}</li>
+            <li class="list-group-item">Message:  {{obj.message}}</li>
+            </ul>
+          </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <h5>None</h5>
+              </ul>
+          </div>
+            {% endif %}
+  </div>
+  </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Medical History</h5>
+        <select id="patient" name="patient" class="form-control" required>
+        {% for pj in patient_obj %}
+        <option value="{{ pj.email }}" data_toggle="modal" data-target="#target-modal">{{ pj.name }}({{pj.email}})</option>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="target-modal" tabindex="-1" aria-labelledby="target-modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="target-modalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+  <script src="../../static/main/js/dashboard.js"></script>
+  <!-- <script>
+    $(document).ready(function(){
+      $("#viewmore").click(function(){
+        $("#myModal").modal();
+      });
+    });
+    </script> -->
+
+
+{% endblock %}
