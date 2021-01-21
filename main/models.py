@@ -1,5 +1,7 @@
 from django.db import models
 from accounts.models import *
+import json
+# from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 class patient_profile(models.Model):
     patient_user=models.OneToOneField(Patient,on_delete=models.CASCADE)
@@ -28,5 +30,15 @@ class Medical_history(models.Model):
     all_illness=models.TextField(max_length=400,default="None",null=True)
     all_operations=models.TextField(max_length=400,default="None",null=True)
     current_medication=models.TextField(max_length=400,default="None",null=True)
+    # he=models.C
     def __str__(self):
         return f'{self.patient_obj.email} Profile'
+
+class Foobar(models.Model):
+    foo=models.CharField(max_length=200)
+
+    def set_foo(self,x):
+        self.foo=json.dumps(x)
+    
+    def get_foo(self):
+        return json.loads(self.foo)

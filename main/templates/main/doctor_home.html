@@ -114,85 +114,6 @@
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 </style>
-<!-- <div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">
-              <span data-feather="home"></span>
-              Dashboard <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              Orders
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              Products
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              Customers
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
-        </ul>
-
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="d-flex align-items-center text-muted" href="#">
-            <span data-feather="plus-circle"></span>
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Current month
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Last quarter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Year-end sale
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-</div> -->
 
 <div class="container-fluid">
   <div class="row">
@@ -205,15 +126,8 @@
           <span data-feather="plus-circle"></span>
         </a>
       </h5>
-
         
         <ul class="nav flex-column mb-2">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Current month
-            </a>
-          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
@@ -237,32 +151,250 @@
     </nav>
   </div>
 </div>
+<!-- Main  -->
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" >
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="margin-top: 50px;">
-    <h1 class="h2">Reading Summary</h1>
+    <h1 class="h2">Dashboard</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group mr-2" style="display:flex">
-        <button class="btn btn-sm btn-outline-secondary" id="Temperature" name="Temperature" onclick="temp()">Temperature</button>
-        <button class="btn btn-sm btn-outline-secondary" id="bmi" name="bmi" onclick="bmi()">BMI</button>
-        <button class="btn btn-sm btn-outline-secondary" id="bloodpressure" name="bloodpressure" onclick="bloodp()">BP</button>
-        <button class="btn btn-sm btn-outline-secondary" id="Skin_conductance" name="Skin_conductance">Skin Conductance</button>
-        <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate">Pulse Rate</button>
-        <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation">Oxygen Saturation</button>
-        <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate">Respiration Rate</button>
-        <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal_ECG" onclick="ecg()">
-          <span data-feather="calendar"></span>
-          ECG
-        </button>       
-         <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb">Hb</button>
-      </div>
-      <button class="btn btn-sm btn-outline-secondary" id="viewmore" data-toggle="modal" data-target="#myModal">
-        <span data-feather="calendar"></span>
-        View More
-      </button>
+        <div class="dropdown">
+          <select onclick="selectChanged1(this.value)" data-toggle="collapse" href="#collapseExample">
+            {% for pj in patient_obj %}
+            <option value="{{pj.email}}">{{ pj.name }}({{pj.email}})</option>
+            {% endfor %}    
+          </select>             
+        </div>
     </div>
   </div>
-  <canvas class="my-4 w-100" id="myChart" width="90%" height="25%"></canvas>
-  <div class="row">
+  <div class="accordion" id="accordionExample">
+  <div class="collapse" id="collapseExample" style="margin-bottom: 30px;">
+    <div class="card">
+    <div class="card-body">
+      <div class="btn-group mr-2" style="display:flex">
+          <button class="btn btn-sm btn-outline-secondary" id="Temperature" name="Temperature" data-toggle="collapse" href="#temperaturecollapse">Temp</button>
+          <button class="btn btn-sm btn-outline-secondary" id="bmi" name="bmi" data-toggle="collapse" href="#bmicollapse">BMI</button>
+          <button class="btn btn-sm btn-outline-secondary" id="bloodpressure" name="bloodpressure" data-toggle="collapse" href="#bpcollapse">BP</button>
+          <button class="btn btn-sm btn-outline-secondary" id="sc" name="Skin_conductance" data-toggle="collapse" href="#sccollapse">Skin Cond</button>
+          <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate" data-toggle="collapse" href="#pulsecollapse">Pulse Rate</button>
+          <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation" data-toggle="collapse" href="#o2collapse">O2 Sat</button>
+          <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate" data-toggle="collapse" href="#rescollapse">RR</button>
+          <button class="btn btn-sm btn-outline-secondary" id="ecg" name="ECG" data-toggle="collapse" href="#ecgcollapse">ECG</button>
+          <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb" data-toggle="collapse" href="#hbcollapse">Hb</button>
+      </div>      
+      <div class="collapse" id="temperaturecollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <span style="text-align:center;">Temperature</span>
+        <canvas class="my-4 w-100" id="myChart_temp" width="90%" height="25%"></canvas> 
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+      </div>
+
+      <div class="collapse" id="bmicollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <span style="text-align:center;">BMI</span>
+        <canvas class="my-4 w-100" id="myChart_bmi" width="90%" height="25%"></canvas> 
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+      </div>
+
+      <div class="collapse" id="bpcollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <span style="text-align:center;">BP</span>
+        <canvas class="my-4 w-100" id="myChart_bp" width="90%" height="25%"></canvas> 
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+      </div>
+
+      <div class="collapse" id="sccollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <span style="text-align:center;">SC</span>
+        <canvas class="my-4 w-100" id="myChart_sc" width="90%" height="25%"></canvas> 
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+      </div>
+
+      <div class="collapse" id="pulsecollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <span style="text-align:center;">SC</span>
+            <canvas class="my-4 w-100" id="myChart_pulse" width="90%" height="25%"></canvas> 
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="collapse" id="o2collapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <span style="text-align:center;">SC</span>
+            <canvas class="my-4 w-100" id="myChart_o2" width="90%" height="25%"></canvas> 
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="collapse" id="rescollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <span style="text-align:center;">SC</span>
+            <canvas class="my-4 w-100" id="myChart_res" width="90%" height="25%"></canvas> 
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+        
+
+      <div class="collapse" id="ecgcollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <span style="text-align:center;">ECG</span>
+        <canvas class="my-4 w-100" id="myChart_ecg" width="90%" height="25%"></canvas> 
+        <div class="row">
+          <div class="col-sm-6">
+            <canvas class="my-4 w-100" id="myChart_ecg1" width="90%" height="25%"></canvas> 
+          </div>
+        <div class="col-sm-6">
+          <canvas class="my-4 w-100" id="myChart_ecg2" width="90%" height="25%"></canvas> 
+        </div>
+        <div class="col-sm-6">
+          <canvas class="my-4 w-100" id="myChart_ecg3" width="90%" height="25%"></canvas> 
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          <li class="list-group-item"></li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+      </div>
+
+      <div class="collapse" id="hbcollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <span style="text-align:center;">SC</span>
+            <canvas class="my-4 w-100" id="myChart_hb" width="90%" height="25%"></canvas> 
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              <li class="list-group-item"></li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+<div class="row">
     <div class="col-sm-6">
       <div class="card">
         <h5 class="card-header">Appointment Requests</h5>
@@ -275,27 +407,43 @@
             <li class="list-group-item">Date:  {{obj.date}}</li>
             <li class="list-group-item">Message:  {{obj.message}}</li>
             </ul>
-          </div>
             {% endfor %}
+          </div>
             {% else %}
             <div class="card-body">
             <ul class="list-group list-group-flush">
               <h5>None</h5>
-              </ul>
-          </div>
+            </ul>
+            </div>
             {% endif %}
-  </div>
-  </div>
+      </div>
+    </div>
     <div class="col-sm-6">
       <div class="card">
         <h5 class="card-header">Medical History</h5>
-        <select id="patient" name="patient" class="form-control" required>
-        {% for pj in patient_obj %}
-        <option value="{{ pj.email }}" data_toggle="modal" data-target="#target-modal">{{ pj.name }}({{pj.email}})</option>
-          {% endfor %}
+        <div class="card-body">
+          <div class="dropdown">
+          <select onclick="selectChanged(this.value)" data-toggle="collapse" href="#collapseExample1">
+            {% for pj in patient_obj %}
+            <option value="{{pj.email}}">{{ pj.name }}({{pj.email}})</option>
+            {% endfor %}    
+          </select>             
+          </div>
+      </div>
+      <div class="collapse" id="collapseExample1" >
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" id="drugallergies"></li>
+              <li class="list-group-item" id="all_illness"></li>
+              <li class="list-group-item" id="all_operations"></li>
+              <li class="list-group-item" id="current_medication"></li>
+              </ul>
+          </div>
+          </div>
+      </div>
       </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade" id="target-modal" tabindex="-1" aria-labelledby="target-modalLabel" aria-hidden="true">
@@ -321,15 +469,505 @@
 </main>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-  <script src="../../static/main/js/dashboard.js"></script>
-  <!-- <script>
-    $(document).ready(function(){
-      $("#viewmore").click(function(){
-        $("#myModal").modal();
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script> -->
+
+    <script>
+      function getCookie(name)
+      {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function selectChanged(newvalue){
+        // var patient_obj_email=document.getElementById("patient_obj").value
+        patient_obj_email=newvalue
+        console.log(patient_obj_email)
+        var data=JSON.stringify({patient_obj_email1:patient_obj_email})
+        var xhttp;
+        var medical_obj;
+        xhttp=new XMLHttpRequest();
+        xhttp.onreadystatechange=function()
+        {
+          if(this.readyState==4 && this.status==200)
+          {
+            medical_obj=this.responseText
+            var obj=JSON.parse(medical_obj)
+            document.getElementById("drugallergies").innerHTML="Drug Allergies:  "+obj['drugallergies']
+            document.getElementById("all_illness").innerHTML="All Illness:  "+obj['all_illness']
+            document.getElementById("all_operations").innerHTML="All Operations:  "+obj['all_operations']
+            document.getElementById("current_medication").innerHTML="Current Medication:  "+obj['current_medication']
+          }
+        };
+        xhttp.open("POST",'medical_history_obj',true);
+        xhttp.setRequestHeader('X-CSRFToken', csrftoken);
+        xhttp.send(data)
+        
+      }
+    </script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="../../static/main/js/Chart.min.js"></script> -->
+     <script type="text/javascript">
+    $(document).on("click", "#Temperature", function(){
+        $.get('{% url "line_chart_json" %}', function(data) {
+            var ctx = $("#myChart_temp").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
       });
-    });
-    </script> -->
+
+      $(document).on("click", "#bmi", function(){
+        $.get('{% url "bmi_chart_json" %}', function(data) {
+            var ctx = $("#myChart_bmi").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      $(document).on("click", "#bloodpressure", function(){
+        $.get('{% url "bp_chart_json" %}', function(data) {
+            var ctx = $("#myChart_bp").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      $(document).on("click", "#sc", function(){
+        $.get('{% url "sc_chart_json" %}', function(data) {
+            var ctx = $("#myChart_sc").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      $(document).on("click", "#ecg", function(){
+        $.get('{% url "ecg_chart_json" %}', function(data) {
+            var ctx = $("#myChart_ecg").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            // type:'time',
+            // distribution:'series',
+            // offset:'true',
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+      
+            var ctx1 = $("#myChart_ecg1").get(0).getContext("2d");
+            new Chart(ctx1, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            // type:'time',
+            // distribution:'series',
+            // offset:'true',
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+      
+            var ctx2 = $("#myChart_ecg2").get(0).getContext("2d");
+            new Chart(ctx2, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            // type:'time',
+            // distribution:'series',
+            // offset:'true',
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+      
+
+            var ctx3 = $("#myChart_ecg3").get(0).getContext("2d");
+            new Chart(ctx3, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            // type:'time',
+            // distribution:'series',
+            // offset:'true',
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+      
+        });
+      });
+
+      $(document).on("click", "#pulse_rate", function(){
+        $.get('{% url "pulse_chart_json" %}', function(data) {
+            var ctx = $("#myChart_pulse").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      $(document).on("click", "#oxygen_saturation", function(){
+        $.get('{% url "o2_chart_json" %}', function(data) {
+            var ctx = $("#myChart_o2").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      $(document).on("click", "#respiration_rate", function(){
+        $.get('{% url "rr_chart_json" %}', function(data) {
+            var ctx = $("#myChart_res").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+      
+      $(document).on("click", "#Hb", function(){
+        $.get('{% url "hb_chart_json" %}', function(data) {
+            var ctx = $("#myChart_hb").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data,options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            },
+            gridLines:{
+                display:false
+            }
+          }],
+          xAxes:[{
+            ticks:{
+              autoSkip:true
+            },
+              gridLines:{
+                  display:false
+              }
+          }]
+        },
+        legend: {
+          display: false
+        },
+        elements:{
+          point:{
+            radius:0
+          }
+        }
+
+      }
+            });
+        });
+      });
+
+      // $(document).on("click", "#oxygen_saturation", function(){
+      
+    </script>
+   <!-- <script src="../../static/main/js/dashboard.js"></script>  -->
 
 
 {% endblock %}

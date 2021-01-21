@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'main',
+    'chartjs',
 ]
 
 MIDDLEWARE = [
