@@ -177,7 +177,7 @@
           <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate" data-toggle="collapse" href="#pulsecollapse">Pulse Rate</button>
           <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation" data-toggle="collapse" href="#o2collapse">O2 Sat</button>
           <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate" data-toggle="collapse" href="#rescollapse">RR</button>
-          <button class="btn btn-sm btn-outline-secondary" id="ecg" name="ECG" data-toggle="collapse" href="#ecgcollapse">ECG</button>
+          <button class="btn btn-sm btn-outline-secondary" id="ECG" name="ECG" data-toggle="collapse" href="#ecgcollapse" onclick="ecg()">ECG</button>
           <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb" data-toggle="collapse" href="#hbcollapse">Hb</button>
       </div>      
       <div class="collapse" id="temperaturecollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
@@ -336,36 +336,51 @@
         
 
       <div class="collapse" id="ecgcollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
-    <div class="row">
-      <div class="col-sm-6">
         <div class="card">
           <span style="text-align:center;">ECG</span>
-        <canvas class="my-4 w-100" id="myChart_ecg" width="90%" height="25%"></canvas> 
-        <div class="row">
-          <div class="col-sm-6">
-            <canvas class="my-4 w-100" id="myChart_ecg1" width="90%" height="25%"></canvas> 
-          </div>
-        <div class="col-sm-6">
-          <canvas class="my-4 w-100" id="myChart_ecg2" width="90%" height="25%"></canvas> 
+          <img src="../../static/main/images/peaks.png" class="img-fluid">
         </div>
-        <div class="col-sm-6">
-          <canvas class="my-4 w-100" id="myChart_ecg3" width="90%" height="25%"></canvas> 
-          </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
+      <!-- <div class="col-sm-6"> -->
         <div class="card">
-          <ul class="list-group list-group-flush">
+          <div class="card-header " style="text-align: center;">Measured Parameters</div>
+          <!-- <ul class="list-group list-group-flush">
           <li class="list-group-item"></li>
           <li class="list-group-item"></li>
           <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          </ul>
+          <li class="list-group-item"></li> -->
+          <div class="row">
+          <div class="col-md-5">
+            <span id="PR"></span>
+            <div class="card">
+              <div class="card-header"> HRV-Time-Domain</div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="Heart_rate"></li>
+                <li class="list-group-item" id="rMSSD"></li>
+                <li class="list-group-item" id="NNxx"></li>
+                <li class="list-group-item" id="pNNxx"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <span id="rr"></span>
+            <div class="card">
+              <div class="card-header"> HRV-Frequency-Domain</div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="LF"></li>
+                <li class="list-group-item" id="HF"></li>
+                <li class="list-group-item" id="LF_HF"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+          <!-- </ul> -->
         </div>
-      </div>
-      
-    </div>
+      <!-- </div> -->
       </div>
 
       <div class="collapse" id="hbcollapse" style="margin-top: 20px;margin-bottom: 30px;" data-parent="#accordionExample">
@@ -514,6 +529,32 @@ function selectChanged(newvalue){
         xhttp.send(data)
         
       }
+    function ecg(){
+      var xhttp;
+      xhttp=new XMLHttpRequest();
+      xhttp.onreadystatechange=function()
+        {
+          if(this.readyState==4 && this.status==200)
+          {
+            ecg_obj=this.responseText
+            var obj=JSON.parse(ecg_obj)
+            document.getElementById("PR").innerHTML="PR:  "+obj['pr']+" BPM"
+            document.getElementById("rr").innerHTML="RR:  "+obj['rr']+" BPM"
+            document.getElementById("Heart_rate").innerHTML="Heart_rate:  "+obj['Heart_rate']+" BPM"
+            document.getElementById("rMSSD").innerHTML="rMSSD:  "+obj['RMSSD']+" ms"
+            document.getElementById("NNxx").innerHTML="NNxx:  "+obj['NNxx']+" ms"
+            document.getElementById("pNNxx").innerHTML="pNNxx:  "+obj['pNNxx']+" ms"
+            document.getElementById("LF").innerHTML="LF:  "+obj['LF']+" Hz"
+            document.getElementById("HF").innerHTML="HF:  "+obj['HF']+" Hz"
+            document.getElementById("LF_HF").innerHTML="LF/HF:  "+obj['LF_HF']+" ms"
+
+
+          }
+        };
+        xhttp.open("GET",'ecgrequest');
+        // xhttp.setRequestHeader('X-CSRFToken', csrftoken);
+        xhttp.send()
+    }
     </script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
     <script type="text/javascript" src="../../static/main/js/Chart.min.js"></script> -->
@@ -666,155 +707,157 @@ function selectChanged(newvalue){
         });
       });
 
-      $(document).on("click", "#ecg", function(){
-        $.get('{% url "ecg_chart_json" %}', function(data) {
-            var ctx = $("#myChart_ecg").get(0).getContext("2d");
-            new Chart(ctx, {
-                type: 'line', data: data,options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false
-            },
-            gridLines:{
-                display:false
-            }
-          }],
-          xAxes:[{
-            // type:'time',
-            // distribution:'series',
-            // offset:'true',
-            ticks:{
-              autoSkip:true
-            },
-              gridLines:{
-                  display:false
-              }
-          }]
-        },
-        legend: {
-          display: false
-        },
-        elements:{
-          point:{
-            radius:0
-          }
-        }
+      // $(document).on("click", "#ECG", function(){
+      //   $.get('{% url "ecgrequest" %}',function(data){
+      //     console.log("hey")
+      //     console.log(data)
+      // //       var ctx = $("#myChart_ecg").get(0).getContext("2d");
+      // //       new Chart(ctx, {
+      // //           type: 'line', data: data,options: {
+      // //   scales: {
+      // //     yAxes: [{
+      // //       ticks: {
+      // //         beginAtZero: false
+      // //       },
+      // //       gridLines:{
+      // //           display:false
+      // //       }
+      // //     }],
+      // //     xAxes:[{
+      // //       // type:'time',
+      // //       // distribution:'series',
+      // //       // offset:'true',
+      // //       ticks:{
+      // //         autoSkip:true
+      // //       },
+      // //         gridLines:{
+      // //             display:false
+      // //         }
+      // //     }]
+      // //   },
+      // //   legend: {
+      // //     display: false
+      // //   },
+      // //   elements:{
+      // //     point:{
+      // //       radius:0
+      // //     }
+      // //   }
 
-      }
-            });
+      // // }
+      // //       });
       
-            var ctx1 = $("#myChart_ecg1").get(0).getContext("2d");
-            new Chart(ctx1, {
-                type: 'line', data: data,options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false
-            },
-            gridLines:{
-                display:false
-            }
-          }],
-          xAxes:[{
-            // type:'time',
-            // distribution:'series',
-            // offset:'true',
-            ticks:{
-              autoSkip:true
-            },
-              gridLines:{
-                  display:false
-              }
-          }]
-        },
-        legend: {
-          display: false
-        },
-        elements:{
-          point:{
-            radius:0
-          }
-        }
+      // //       var ctx1 = $("#myChart_ecg1").get(0).getContext("2d");
+      // //       new Chart(ctx1, {
+      // //           type: 'line', data: data,options: {
+      // //   scales: {
+      // //     yAxes: [{
+      // //       ticks: {
+      // //         beginAtZero: false
+      // //       },
+      // //       gridLines:{
+      // //           display:false
+      // //       }
+      // //     }],
+      // //     xAxes:[{
+      // //       // type:'time',
+      // //       // distribution:'series',
+      // //       // offset:'true',
+      // //       ticks:{
+      // //         autoSkip:true
+      // //       },
+      // //         gridLines:{
+      // //             display:false
+      // //         }
+      // //     }]
+      // //   },
+      // //   legend: {
+      // //     display: false
+      // //   },
+      // //   elements:{
+      // //     point:{
+      // //       radius:0
+      // //     }
+      // //   }
 
-      }
-            });
+      // // }
+      // //       });
       
-            var ctx2 = $("#myChart_ecg2").get(0).getContext("2d");
-            new Chart(ctx2, {
-                type: 'line', data: data,options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false
-            },
-            gridLines:{
-                display:false
-            }
-          }],
-          xAxes:[{
-            // type:'time',
-            // distribution:'series',
-            // offset:'true',
-            ticks:{
-              autoSkip:true
-            },
-              gridLines:{
-                  display:false
-              }
-          }]
-        },
-        legend: {
-          display: false
-        },
-        elements:{
-          point:{
-            radius:0
-          }
-        }
+      // //       var ctx2 = $("#myChart_ecg2").get(0).getContext("2d");
+      // //       new Chart(ctx2, {
+      // //           type: 'line', data: data,options: {
+      // //   scales: {
+      // //     yAxes: [{
+      // //       ticks: {
+      // //         beginAtZero: false
+      // //       },
+      // //       gridLines:{
+      // //           display:false
+      // //       }
+      // //     }],
+      // //     xAxes:[{
+      // //       // type:'time',
+      // //       // distribution:'series',
+      // //       // offset:'true',
+      // //       ticks:{
+      // //         autoSkip:true
+      // //       },
+      // //         gridLines:{
+      // //             display:false
+      // //         }
+      // //     }]
+      // //   },
+      // //   legend: {
+      // //     display: false
+      // //   },
+      // //   elements:{
+      // //     point:{
+      // //       radius:0
+      // //     }
+      // //   }
 
-      }
-            });
+      // // }
+      // //       });
       
 
-            var ctx3 = $("#myChart_ecg3").get(0).getContext("2d");
-            new Chart(ctx3, {
-                type: 'line', data: data,options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false
-            },
-            gridLines:{
-                display:false
-            }
-          }],
-          xAxes:[{
-            // type:'time',
-            // distribution:'series',
-            // offset:'true',
-            ticks:{
-              autoSkip:true
-            },
-              gridLines:{
-                  display:false
-              }
-          }]
-        },
-        legend: {
-          display: false
-        },
-        elements:{
-          point:{
-            radius:0
-          }
-        }
+      // //       var ctx3 = $("#myChart_ecg3").get(0).getContext("2d");
+      // //       new Chart(ctx3, {
+      // //           type: 'line', data: data,options: {
+      // //   scales: {
+      // //     yAxes: [{
+      // //       ticks: {
+      // //         beginAtZero: false
+      // //       },
+      // //       gridLines:{
+      // //           display:false
+      // //       }
+      // //     }],
+      // //     xAxes:[{
+      // //       // type:'time',
+      // //       // distribution:'series',
+      // //       // offset:'true',
+      // //       ticks:{
+      // //         autoSkip:true
+      // //       },
+      // //         gridLines:{
+      // //             display:false
+      // //         }
+      // //     }]
+      // //   },
+      // //   legend: {
+      // //     display: false
+      // //   },
+      // //   elements:{
+      // //     point:{
+      // //       radius:0
+      // //     }
+      // //   }
 
-      }
-            });
+      // // }
+      // //       });
       
-        });
-      });
+      //   });
+      // });
 
       $(document).on("click", "#pulse_rate", function(){
         $.get('{% url "pulse_chart_json" %}', function(data) {
