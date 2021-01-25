@@ -25,6 +25,14 @@ from scipy.interpolate import interp1d
 from scipy.integrate import trapz
 
 
+import os
+import csv
+# import numpy as np
+# import pandas as pd
+import pickle
+from collections import defaultdict
+from sklearn.naive_bayes import MultinomialNB
+
 
 df=pd.read_csv('/home/siddharth/Intern_winter/sdn/main/data.csv')
 patient_id=df['patient_id']
@@ -64,6 +72,122 @@ def patient_home(request):
         medical_history_obj=Medical_history.objects.all().get(patient_obj=patient_obj)
     else:
         medical_history_obj=None
+    data = pd.read_excel('raw_data.xlsx')
+    # print(data)
+    data = data.fillna(method='ffill')
+    print(data)
+    def process_name(data):
+        data_list = []
+        data_name = data.replace('^','_').split('_')
+        n = 1
+        # print(data_name)
+        for names in data_name:
+            if n%2==0:
+                data_list.append(names)
+            n+=1
+        # print(data_list)
+        return data_list
+    disease_list = []
+    disease_symptom_dict = defaultdict(list)
+    disease_symptom_count = {}
+    count = 0
+
+    for idx, row in data.iterrows():
+        
+        # Get the Disease Names
+        if (row['Disease'] !="\xc2\xa0") and (row['Disease'] != ""):
+            disease = row['Disease']
+            # print(disease)
+            disease_list = process_name(data=disease)
+            # print(disease_list)
+            count = row['Count of Disease Occurrence']
+            # print(count)
+
+        # Get the Symptoms Corresponding to Diseases
+        if (row['Symptom'] !="\xc2\xa0") and (row['Symptom'] != ""):
+            symptom = row['Symptom']
+            symptom_list = process_name(data=symptom)
+            for d in disease_list:
+                for s in symptom_list:
+                    disease_symptom_dict[d].append(s)
+                disease_symptom_count[d] = count
+    with open('dataset_clean.csv','w') as csvfile:
+        writer = csv.writer(csvfile)
+        for key, value in disease_symptom_dict.items():
+            for v in value:
+                key = str.encode(key).decode('utf-8')
+                writer.writerow([key,v,disease_symptom_count[key]])
+    columns = ['Source', 'Target', 'Weight']
+    data = pd.read_csv('dataset_clean.csv', names=columns, encoding='ISO-8859-1')
+    data.head()
+    data.to_csv('dataset_clean.csv',index=False)
+    unique_diseases = data['Source'].unique()
+    print('No. of diseases:', len(unique_diseases))
+    print('Disease:')
+    for disease in unique_diseases:
+        print(disease)
+    unique_symptoms = data['Target'].unique()
+    print('No. of symptoms',len(unique_symptoms))
+    print('Symptoms:')
+    for symptom in unique_symptoms:
+        print(symptom)
+    df_1 = pd.get_dummies(data.Target)
+    print(df_1.head())
+    df_s = data['Source']
+    print(df_s.head())
+    df_pivoted = pd.concat([df_s, df_1], axis=1)
+    df_pivoted.drop_duplicates(keep='first',inplace=True)
+    df_pivoted = df_pivoted.groupby('Source',sort=False).sum()
+    df_pivoted = df_pivoted.reset_index()
+    df_pivoted.head()
+    df_pivoted.to_csv('df_pivoted.csv')
+    x = df_pivoted[df_pivoted.columns[1:]]
+    y = df_pivoted['Source']
+    print(x[:5])
+    print(y[:5])
+    weights = np.fromiter(disease_symptom_count.values(), dtype=float)
+    total=sum(weights)
+    prob = weights/total
+    print(prob)
+    mnb_tot = MultinomialNB()
+    mnb_tot = mnb_tot.fit(x, y)
+    mnb_tot.score(x, y)
+    disease_pred = mnb_tot.predict(x)
+    disease_real = y.values
+    for i in range(0, len(disease_real)):
+        if disease_pred[i]!=disease_real[i]:
+            print('Pred:',disease_pred[i])
+            print('Actual:',disease_real[i])
+            print('##########################')
+    # Using class prior prob
+    mnb_prob = MultinomialNB(class_prior=prob)
+    mnb_prob = mnb_prob.fit(x, y)
+    mnb_prob.score(x, y)
+    disease_pred = mnb_prob.predict(x)
+    for i in range(0, len(disease_real)):
+        if disease_pred[i]!=disease_real[i]:
+            print('Pred:',disease_pred[i])
+            print('Actual:',disease_real[i])
+            print('##########################')
+    filename = 'NB_model.sav'
+    pickle.dump(mnb_tot, open(filename, 'wb'))
+    model = pickle.load(open(filename,'rb'))
+    # model.predict([100*[1]+100*[0]+204*[0]])
+    symptoms = df_pivoted.columns[1:].values
+    print(symptoms)
+    test_input = [0]*404
+    # print(type(test_input))
+    # user_symptoms = list(input().split(','))
+    # print(type(user_symptoms))
+    # for symptom in user_symptoms:
+    #     test_input[np.where(symptoms==symptom)[0][0]] = 1
+    # print(type(test_input))
+    # print(test_input)
+    # print('Most probable disease:',model.predict([test_input]))
+    # print(type([test_input]))
+    # unique_symptoms=unique_symptoms.tolist()
+    # unique_diseases=unique_diseases.tolist()
+    # unique_symptoms=json.dumps(unique_symptoms)
     context={
         'patient_name':patient_name,
         'patient_email':patient_email,
@@ -74,11 +198,14 @@ def patient_home(request):
         'patient_gender':patient_gender,
         'doctors':doctors,
         'medical_history_obj':medical_history_obj,
+        'symptoms':unique_symptoms,
     }
     return render(request,'main/patient_home.html',context)
+
 def logout(request):
     messages.success(request,'Successfully, Loggedout')
     return redirect('home')
+
 # @login_required(login_url='logind')
 def doctor_home(request):
     doctor_name=request.session.get('doctor_name')
@@ -111,6 +238,7 @@ def appointment(request):
     message=request.POST['message']
     appointment=Appointment.objects.create(from_patient_name=fullName,from_patient_email=email,time=time,date=date,doctor_mail=doctor,message=message)
     return render(request,'main/appointment.html',{'fullName':fullName,'email':email,'time':time,'date':date, 'doctor':doctor,'message':message})
+
 def medical_history_check(request):
     patient_email=request.POST['patient_email']
     patient_obj=Patient.objects.all().get(email=patient_email)
@@ -1066,4 +1194,134 @@ def ecg(request):
     }
     print("Frequency domain metrics:")
     context=json.dumps(context1)
+    return HttpResponse(context,content_type='application/json')
+
+def checkdisease_drive(request):
+    value=request.body
+    value=value.decode("utf-8")
+    value=json.loads(value)  
+    value_symp=value['disease']  
+    print(value_symp)
+    data = pd.read_excel('raw_data.xlsx')
+    # print(data)
+    data = data.fillna(method='ffill')
+    # print(data)
+    def process_name(data):
+        data_list = []
+        data_name = data.replace('^','_').split('_')
+        n = 1
+        # print(data_name)
+        for names in data_name:
+            if n%2==0:
+                data_list.append(names)
+            n+=1
+        # print(data_list)
+        return data_list
+    disease_list = []
+    disease_symptom_dict = defaultdict(list)
+    disease_symptom_count = {}
+    count = 0
+
+    for idx, row in data.iterrows():
+        
+        # Get the Disease Names
+        if (row['Disease'] !="\xc2\xa0") and (row['Disease'] != ""):
+            disease = row['Disease']
+            # print(disease)
+            disease_list = process_name(data=disease)
+            # print(disease_list)
+            count = row['Count of Disease Occurrence']
+            # print(count)
+
+        # Get the Symptoms Corresponding to Diseases
+        if (row['Symptom'] !="\xc2\xa0") and (row['Symptom'] != ""):
+            symptom = row['Symptom']
+            symptom_list = process_name(data=symptom)
+            for d in disease_list:
+                for s in symptom_list:
+                    disease_symptom_dict[d].append(s)
+                disease_symptom_count[d] = count
+    with open('dataset_clean.csv','w') as csvfile:
+        writer = csv.writer(csvfile)
+        for key, value in disease_symptom_dict.items():
+            for v in value:
+                key = str.encode(key).decode('utf-8')
+                writer.writerow([key,v,disease_symptom_count[key]])
+    columns = ['Source', 'Target', 'Weight']
+    data = pd.read_csv('dataset_clean.csv', names=columns, encoding='ISO-8859-1')
+    data.head()
+    data.to_csv('dataset_clean.csv',index=False)
+    unique_diseases = data['Source'].unique()
+    # print('No. of diseases:', len(unique_diseases))
+    # print('Disease:')
+    # for disease in unique_diseases:
+        # print(disease)
+    unique_symptoms = data['Target'].unique()
+    # print('No. of symptoms',len(unique_symptoms))
+    # print('Symptoms:')
+    # for symptom in unique_symptoms:
+        # print(symptom)
+    df_1 = pd.get_dummies(data.Target)
+    # print(df_1.head())
+    df_s = data['Source']
+    # print(df_s.head())
+    df_pivoted = pd.concat([df_s, df_1], axis=1)
+    df_pivoted.drop_duplicates(keep='first',inplace=True)
+    df_pivoted = df_pivoted.groupby('Source',sort=False).sum()
+    df_pivoted = df_pivoted.reset_index()
+    df_pivoted.head()
+    df_pivoted.to_csv('df_pivoted.csv')
+    x = df_pivoted[df_pivoted.columns[1:]]
+    y = df_pivoted['Source']
+    # print(x[:5])
+    # print(y[:5])
+    weights = np.fromiter(disease_symptom_count.values(), dtype=float)
+    total=sum(weights)
+    prob = weights/total
+    # print(prob)
+    mnb_tot = MultinomialNB()
+    mnb_tot = mnb_tot.fit(x, y)
+    mnb_tot.score(x, y)
+    disease_pred = mnb_tot.predict(x)
+    disease_real = y.values
+    # for i in range(0, len(disease_real)):
+    #     if disease_pred[i]!=disease_real[i]:
+            # print('Pred:',disease_pred[i])
+            # print('Actual:',disease_real[i])
+            # print('##########################')
+    # Using class prior prob
+    mnb_prob = MultinomialNB(class_prior=prob)
+    mnb_prob = mnb_prob.fit(x, y)
+    mnb_prob.score(x, y)
+    disease_pred = mnb_prob.predict(x)
+    # for i in range(0, len(disease_real)):
+    #     if disease_pred[i]!=disease_real[i]:
+            # print('Pred:',disease_pred[i])
+            # print('Actual:',disease_real[i])
+            # print('##########################')
+    filename = 'NB_model.sav'
+    pickle.dump(mnb_tot, open(filename, 'wb'))
+    model = pickle.load(open(filename,'rb'))
+    # model.predict([100*[1]+100*[0]+204*[0]])
+    symptoms = df_pivoted.columns[1:].values
+    # value_symp=np.core.defchararray.split(value_symp)
+    # print(symptoms)
+    test_input = [0]*404
+    # value_symp=list(value_symp)
+    # value_symp.reshape(1, -1)
+    # user_symptoms = list(value_symp.split(','))
+    user_symptoms=list(value_symp.split(','))
+    print(user_symptoms)
+    for symptom in user_symptoms:
+        test_input[np.where(symptoms==symptom)[0][0]] = 1
+    print('Most probable disease:',model.predict([test_input]))
+    # unique_symptoms=unique_symptoms.tolist()
+    # unique_diseases=unique_diseases.tolist()
+    # unique_symptoms=json.dumps(unique_symptoms)
+    ans=model.predict([test_input])
+    context={
+        'disease':ans.tolist(),
+        # 'diseases':unique_diseases.tolist(),
+    }
+    context=json.dumps(context)
     return HttpResponse(context,content_type='application/json')

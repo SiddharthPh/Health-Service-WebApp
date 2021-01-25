@@ -26,9 +26,8 @@ urlpatterns = [
         path('chartJSON7', ecg_chart_json, name='ecg_chart_json'),
         path('chart8',hb_chart, name='hb_chart'),
         path('chartJSON8', hb_chart_json, name='hb_chart_json'),
-
         path('checkdisease', views.checkdisease, name="checkdisease"),
         path('ecgrequest',views.ecg,name="ecgrequest"),
-
+        path('checkdisease_drive',views.checkdisease_drive, name="checkdisease_drive"),
 
 ]

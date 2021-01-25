@@ -536,6 +536,7 @@ function selectChanged(newvalue){
         {
           if(this.readyState==4 && this.status==200)
           {
+            console.log("success")
             ecg_obj=this.responseText
             var obj=JSON.parse(ecg_obj)
             document.getElementById("PR").innerHTML="PR:  "+obj['pr']+" BPM"

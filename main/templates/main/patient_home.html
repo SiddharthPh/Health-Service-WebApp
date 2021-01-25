@@ -13,6 +13,66 @@
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
 
 <style>
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+/* The search field */
+#myInput {
+  box-sizing: border-box;
+  /* background-image: url('searchicon.png'); */
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+/* The search field when it gets focus/clicked on */
+#myInput:focus {outline: 3px solid #ddd;}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  border: 1px solid #ddd;
+  z-index: 1;
+  overflow: auto;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
   body {
   font-size: .875rem;
 }
@@ -113,6 +173,18 @@
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 50px;
+  font-size: 20px;
+}
+
+/* div.container-dropdown{
+  overflow: scroll;
+} */
 </style>
 <!-- <div class="container-fluid">
   <div class="row">
@@ -489,13 +561,14 @@
   </div>
 </div>
 
+<!-- 
 <div class="container">
   <br>
   <div class="text-center"> 
     <h3>
         Identify possible conditions and treatment related to your symptoms.
     </h3><br>
-      <button onclick="Functionshow()" class="btn btn-primary dropdown-toggle">Add symptoms</button>
+          <button onclick="Functionshow()" class="btn btn-primary dropdown-toggle">Add symptoms</button>
   </div>
 </div >
 
@@ -507,85 +580,116 @@
             name="search" placeholder=" Search symptoms.. "> <br>
       </div> 
 
-      <div class="container" id="container-dropdown">
-          {% for i in list2 %}
+      <div class="container-dropdown" id="container-dropdown" style="overflow: scroll;">
+          {% for symptom in symptoms %}
           
-          <a class="dropdown-item" onclick="Functionsymptoms(this.textContent)">{{i}}</a>
+          <a class="dropdown-item" onclick="Functionsymptoms(this.textContent)" style="overflow: scroll;">{{symptom}}</a>
           
           {% endfor %}
+      </div>
+</div>
+  
+<br><br>
+<div class="text-center">
+      <div class="card" id= "symptoms-box">
+  
+    {% csrf_token %}
+          <div class="card-header">Symptoms list -</div>
+                  <div class="card-body" id="sympbox" >
+                  </div>
+                        <br>
+                        <div class="card-footer">
+                              <button id="predict" class="btn btn-success">Predict</button>
+                        </div>
+           </div>
+      </div>
+</div>
 
-      
-          <br><br>
-          <div class="text-center">
-                <div class="card" id= "symptoms-box">
-            
-              {% csrf_token %}
-                    <div class="card-header">Symptoms list -</div>
-                            <div class="card-body" id="sympbox" >
+<br>
+
+<div id="resultdiv" style="display: none;" >
+      <div class="text-center">
+            <div class="card" id="predicted-data">
+                  <div>
+                          <span class="diseasefield" >Patient name : {{ user.patient.name }}</span>
+                          <span class="diseasefield" >&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Age : {{ user.patient.age }} </span>
+                  </div>
+                  <span class="diseasefield" >predicted disease is : </span><span class="diseasefield" id="diseasefield" style="color: #092700; text-shadow: 2px 2px 4px rgb(36, 255, 45);"></span> <br>
+                  <br>
+                  <span class="diseasefield">confidence score of :  </span>
+                  <span>
+                        <div class="progress" style="display: inline-block;width:140px">
+                            <div id="percentage" class="progress-bar" style="width: 0%">0%
                             </div>
-                                  <br>
-                                  <div class="card-footer">
-                                        <button id="predict" class="btn btn-success">Predict</button>
-                                  </div>
-                     </div>
-                </div>
-          </div>
-        
-          <br>
-        
-          <div id="resultdiv" style="display: none;" >
-                <div class="text-center">
-                      <div class="card" id="predicted-data">
-                            <div>
-                                    <span class="diseasefield" >Patient name : </span>
-                                    <span class="diseasefield" >&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Age :  </span>
-                            </div>
-                            <span class="diseasefield" >predicted disease is : </span><span class="diseasefield" id="diseasefield" style="color: #092700; text-shadow: 2px 2px 4px rgb(36, 255, 45);"></span> <br>
-                            <br>
-                            <span class="diseasefield">confidence score of :  </span>
-                            <span>
-                                  <div class="progress" style="display: inline-block;width:140px">
-                                      <div id="percentage" class="progress-bar" style="width: 0%">0%
-                                      </div>
-                                  </div>
-                            </span>
-        
-                            </div>
-                      </div>
-        
-                <div class="text-center mt-4 mb-4"> 
-                      <button class="btn btn-outline-success">
-                            <a id="href" href="https://www.google.com/search?q=anuj" target="_blank" rel="noopener noreferrer">Click here to know more about &nbsp 
-                            <span id="diseasesearch" style="color: crimson;"></span></a>
-                      </button>
-                </div>
-                  <br><br>
-        
-                <div class="text-center">
-                  <h4>This tool does not provide medical advice. It is intended for informational purposes only.
-                  </h4><h4>It is not a substitute for professional medical advice, diagnosis or treatment. 
-                  </h4>
-                <br><br>
-        
-                </div>
-        
-        
-        <div class="mx-auto text-center " style="width:350px">
-          
-             
-                <div >  <form action="consult_a_doctor" method="GET">
-                    {% csrf_token %} 
-                    <button id="consultbtn" type="submit" class="btn btn-primary"> Consult a <span id="consultdoctor"  name="consultdoctor" > </span> doctor</button>
-                  </form>
-                </div>
-              
-         
-        </div>
-        
-                 
-        
-        </div>
- 
+                        </div>
+                  </span>
+
+                  </div>
+            </div>
+
+      <div class="text-center mt-4 mb-4"> 
+            <button class="btn btn-outline-success">
+                  <a id="href" href="https://www.google.com/search?q=anuj" target="_blank" rel="noopener noreferrer">Click here to know more about &nbsp 
+                  <span id="diseasesearch" style="color: crimson;"></span></a>
+            </button>
+      </div>
+        <br><br>
+
+      <div class="text-center">
+        <h4>This tool does not provide medical advice. It is intended for informational purposes only.
+        </h4><h4>It is not a substitute for professional medical advice, diagnosis or treatment. 
+        </h4>
+      <br><br>
+
+      </div>
+
+
+<div class="mx-auto text-center " style="width:350px">
+
+   
+      <div >  <form action="consult_a_doctor" method="GET">
+          {% csrf_token %} 
+          <button id="consultbtn" type="submit" class="btn btn-primary"> Consult a <span id="consultdoctor"  name="consultdoctor" > </span> doctor</button>
+        </form>
+      </div>
+    
+
+</div>
+
+       
+
+</div> -->
+<div class="container">
+  <div class="card">
+    <div class="card-header">Disease Prediction</div>
+  <div class="dropdown" style="margin-bottom: 300px;">
+  <button onclick="myFunction()" class="dropbtn">Click this to add symptom</button>
+  <div id="myDropdown" class="dropdown-content" style="overflow-y: scroll;height: 300px;">
+    <input class="sticky" type="text" placeholder="Search for symptom" id="myInput" onkeyup="filterFunction()">
+    <!-- <select class="js-example-basic-single" name="symptom" onclick="check_disease(this.value)"> -->
+    {% for symptom in symptoms %}
+    <a  onclick="check_disease(this.id)" id="{{symptom}}">{{symptom}}</a>
+    <!-- <option value="{{symptom}}">{{symptom}}</option> -->
+
+    {% endfor %}
+  </div>
+  <div class="card-content">
+    <br><br>
+    <li id="disease"></li>
+  </div>
+</div>
+</div>
+</div>
+
+ <!-- <div class="card">
+  <select class="js-example-basic-single" name="symptom">
+    <input placeholder="This ">
+    {% for symptom in symptoms %}
+    <option>{{symptom}}</option>
+    {% endfor %}
+  </select>
+</div> -->
+  </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
@@ -599,6 +703,87 @@
       });
     });
     </script> -->
+    <script>
+
+function getCookie(name)
+      {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+
+
+      function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toLowerCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("option");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+
+      function check_disease(svalue){
+        document.getElementById("myDropdown").classList.toggle("show");
+        var xhttp;
+        data=svalue;
+        console.log(data)
+        data=JSON.stringify({disease:data})
+        console.log(data)
+        xhttp=new XMLHttpRequest()
+        xhttp.onreadystatechange=function()
+        {
+          if(this.readyState==4 && this.status==200)
+          {
+            // console.log("success")
+            disease=this.responseText
+            var obj=JSON.parse(disease)
+            console.log(obj)
+            document.getElementById("disease").innerHTML="Disease might be  "+obj['disease']
+            // document.getElementById("rr").innerHTML="RR:  "+obj['rr']+" BPM"
+            // document.getElementById("Heart_rate").innerHTML="Heart_rate:  "+obj['Heart_rate']+" BPM"
+            // document.getElementById("rMSSD").innerHTML="rMSSD:  "+obj['RMSSD']+" ms"
+            // document.getElementById("NNxx").innerHTML="NNxx:  "+obj['NNxx']+" ms"
+            // document.getElementById("pNNxx").innerHTML="pNNxx:  "+obj['pNNxx']+" ms"
+            // document.getElementById("LF").innerHTML="LF:  "+obj['LF']+" Hz"
+            // document.getElementById("HF").innerHTML="HF:  "+obj['HF']+" Hz"
+            // document.getElementById("LF_HF").innerHTML="LF/HF:  "+obj['LF_HF']+" ms"
+
+
+          }
+        };
+        xhttp.open("POST",'checkdisease_drive',true);
+        xhttp.setRequestHeader('X-CSRFToken', csrftoken);
+        xhttp.send(data);
+      }
+
+      $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+    </script>
     <script>
       function Functionshow() {
   
