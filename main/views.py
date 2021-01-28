@@ -35,13 +35,17 @@ from sklearn.naive_bayes import MultinomialNB
 
 
 df=pd.read_csv('/home/siddharth/Intern_winter/sdn/main/data.csv')
-patient_id=df['patient_id']
+# patient_id=df['patient_id']
 list_temp=[]
 list_date=[]
-list_bp=[]
+list_bps=[]
+list_bpd=[]
 list_bmi=[]
 list_sc=[]
 list_rr=[]
+list_pulse=[]
+list_o2=[]
+list_hb=[]
 count=0
 for temp in df['temp']:
     list_temp.append(temp)
@@ -51,6 +55,54 @@ for temp in df['temp']:
         break
 for date in df['date']:
     list_date.append(date)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for bmi in df['bmi']:
+    list_bmi.append(bmi)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for sc in df['sc']:
+    list_sc.append(sc)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for pulse in df['pulse']:
+    list_pulse.append(pulse)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for o2 in df['o2']:
+    list_o2.append(o2)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for rr in df['rr']:
+    list_rr.append(rr)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for hb in df['hb']:
+    list_hb.append(hb)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for bps in df['bp(systolic)']:
+    list_bps.append(bps)
+    count=count+1
+    if count==7:
+        count=0
+        break
+for bpd in df['bp(diastolic)']:
+    list_bpd.append(bpd)
     count=count+1
     if count==7:
         count=0
@@ -199,6 +251,16 @@ def patient_home(request):
         'doctors':doctors,
         'medical_history_obj':medical_history_obj,
         'symptoms':unique_symptoms,
+        'date':list_date,
+        'temp':list_temp,
+        'bmi':list_bmi,
+        'sc':list_sc,
+        'pulse':list_pulse,
+        'o2':list_o2,
+        'rr':list_rr,
+        'hb':list_hb,
+        'bpd':list_bpd,
+        'bps':list_bps,
     }
     return render(request,'main/patient_home.html',context)
 
@@ -494,6 +556,7 @@ class LineChartJSONView(BaseLineChartView):
         return datasets
 
 line_chart = TemplateView.as_view(template_name='doctor_home.html')
+line_chart1 = TemplateView.as_view(template_name='patient_home.html')
 line_chart_json = LineChartJSONView.as_view()
 
 
@@ -968,7 +1031,8 @@ def ecg(request):
         plt.legend(loc="upper right", fontsize=20)
         plt.xlabel("Time (milliseconds)", fontsize=16)
         plt.ylabel("Amplitude", fontsize=16)
-        
+        # plt.savefig("peaks1-%s-%s.png" % (start, stop))
+
         plt.subplot(212)
         plt.title('Similarity with QRS template', fontsize=24)
         plt.plot(ecg_slice.index, similarity, label="Similarity with QRS filter", color="green", linewidth=1)
@@ -1309,8 +1373,8 @@ def checkdisease_drive(request):
     test_input = [0]*404
     # value_symp=list(value_symp)
     # value_symp.reshape(1, -1)
-    # user_symptoms = list(value_symp.split(','))
-    user_symptoms=list(value_symp.split(','))
+    user_symptoms = value_symp
+    # user_symptoms=list(value_symp.split(','))
     print(user_symptoms)
     for symptom in user_symptoms:
         test_input[np.where(symptoms==symptom)[0][0]] = 1

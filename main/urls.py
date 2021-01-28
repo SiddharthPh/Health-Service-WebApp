@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import line_chart_json, line_chart, bmi_chart, bmi_chart_json,bp_chart,bp_chart_json, sc_chart,sc_chart_json, ecg_chart,ecg_chart_json, o2_chart,o2_chart_json, pulse_chart, pulse_chart_json,rr_chart, rr_chart_json, hb_chart, hb_chart_json
+from .views import line_chart_json, line_chart,line_chart1, bmi_chart, bmi_chart_json,bp_chart,bp_chart_json, sc_chart,sc_chart_json, ecg_chart,ecg_chart_json, o2_chart,o2_chart_json, pulse_chart, pulse_chart_json,rr_chart, rr_chart_json, hb_chart, hb_chart_json
 urlpatterns = [
         path('patient',views.patient_home, name="patient_home"),
         path('doctor',views.doctor_home,name="doctor_home"),
@@ -9,6 +9,7 @@ urlpatterns = [
         path('medical_history_check',views.medical_history_check,name="medical_history_check"),
         path('medical_history_obj',views.medical_history_obj,name="medical_history_obj"),
         path('chart', line_chart, name='line_chart'),
+        path('chart_p1', line_chart1, name='line_chart1'),
         path('chartJSON', line_chart_json, name='line_chart_json'),
         path('chart1',bmi_chart, name='bmi_chart'),
         path('chartJSON1', bmi_chart_json, name='bmi_chart_json'),

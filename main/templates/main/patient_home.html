@@ -331,40 +331,341 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="margin-top: 50px;">
     <h1 class="h2">Health Summary</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2" style="display:flex">
+        <button class="btn btn-sm btn-outline-secondary" id="Temperature" name="Temperature" data-toggle="modal" data-target="#tempModal">Temp</button>
+        <button class="btn btn-sm btn-outline-secondary" id="bmi" name="bmi" data-toggle="modal" data-target="#bmiModal">BMI</button>
+        <button class="btn btn-sm btn-outline-secondary" id="bloodpressure" name="bloodpressure" data-toggle="modal" data-target="#bpModal">BP</button>
+        <button class="btn btn-sm btn-outline-secondary" id="sc" name="Skin_conductance" data-toggle="modal" data-target="#scModal">Skin Cond</button>
+        <button class="btn btn-sm btn-outline-secondary" id="pulse_rate" name="pulse_rate" data-toggle="modal" data-target="#pulseModal">Pulse Rate</button>
+        <button class="btn btn-sm btn-outline-secondary" id="oxygen_saturation" name="oxygen_saturation" data-toggle="modal" data-target="#o2Modal">O2 Sat</button>
+        <button class="btn btn-sm btn-outline-secondary" id="respiration_rate" name="respiration_rate" data-toggle="modal" data-target="#rrModal">RR</button>
+        <button class="btn btn-sm btn-outline-secondary" id="ECG" name="ECG" data-toggle="modal" href="#ecgModal" onclick="ecg()">ECG</button>
+        <button class="btn btn-sm btn-outline-secondary" id="Hb" name="Hb" data-toggle="modal" data-target="#hbModal">Hb</button>
+      </div>   
     </div>
   </div>
 
-      
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Temperature Reading</h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" id="drugallergies"></li>
-            <li class="list-group-item" id="all_illness"></li>
-            <li class="list-group-item" id="all_operations"></li>
-            <li class="list-group-item" id="current_medication"></li>
-            </ul>
+  <div class="modal" id="tempModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Temp Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for temp in temp %}
+            <li class="list-group-item" id="{{date}}">{{temp}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Blood Pressure Reading</h5>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item" id="drugallergies"></li>
-              <li class="list-group-item" id="all_illness"></li>
-              <li class="list-group-item" id="all_operations"></li>
-              <li class="list-group-item" id="current_medication"></li>
+  </div>
+
+  <div class="modal" id="bmiModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">BMI Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for bmi in bmi %}
+            <li class="list-group-item" id="{{date}}">{{bmi}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="bpModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">BP Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for bps in bps %}
+            <li class="list-group-item" id="{{date}}">{{bps}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul class="list-group">
+                {% for bpd in bpd %}
+                <li class="list-group-item" id="{{date}}">{{bpd}}</li>
+                {% endfor %}
               </ul>
+                </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-  </div>  
-  <!-- Layout -->
-  <!-- <div class="container">
+  </div>
+  <div class="modal" id="scModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Skin Conductance Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for sc in sc %}
+            <li class="list-group-item" id="{{date}}">{{sc}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="pulseModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Pulse Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for pulse in pulse %}
+            <li class="list-group-item" id="{{date}}">{{pulse}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="o2Modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">O2 Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for o2 in o2 %}
+            <li class="list-group-item" id="{{date}}">{{o2}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="rrModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">RR Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for rr in rr %}
+            <li class="list-group-item" id="{{date}}">{{rr}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="hbModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Hb Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for hb in hb %}
+            <li class="list-group-item" id="{{date}}">{{hb}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="ecgModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">ECG Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h6> HRV-Time-Domain</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="Heart_rate"></li>
+                <li class="list-group-item" id="rMSSD"></li>
+                <li class="list-group-item" id="NNxx"></li>
+                <li class="list-group-item" id="pNNxx"></li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+              <h6> HRV-Frequency-Domain</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="LF"></li>
+                <li class="list-group-item" id="HF"></li>
+                <li class="list-group-item" id="LF_HF"></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Layout
+  < <div class="container">
     <h4 style="font-weight: 600;margin: 3rem 0rem;">Office Bearers</h4>
     <div class="row">
       <div class="col s12 m6 l4">
@@ -660,10 +961,11 @@
 
 </div> -->
 <div class="container">
-  <div class="card">
-    <div class="card-header">Disease Prediction</div>
-  <div class="dropdown" style="margin-bottom: 300px;">
-  <button onclick="myFunction()" class="dropbtn">Click this to add symptom</button>
+  <div class="card" style="width: 600px; height: 500px; margin-bottom: 20px;">
+    <h5><div class="card-header">Disease Prediction</div></h5>
+  <div class="dropdown">
+    <div class="row">
+  <button onclick="myFunction()" class="dropbtn" style="margin-left: 20px; margin-top: 20px;">Click this to add symptom1</button>
   <div id="myDropdown" class="dropdown-content" style="overflow-y: scroll;height: 300px;">
     <input class="sticky" type="text" placeholder="Search for symptom" id="myInput" onkeyup="filterFunction()">
     <!-- <select class="js-example-basic-single" name="symptom" onclick="check_disease(this.value)"> -->
@@ -673,11 +975,69 @@
 
     {% endfor %}
   </div>
-  <div class="card-content">
-    <br><br>
-    <li id="disease"></li>
+  <div class="input-group-text" id="btnGroupAddon" style="margin-top: 20px;margin-left: 20px;">Symptom1:</div>
   </div>
-</div>
+  <div class="row">
+  <button onclick="myFunction2()" class="dropbtn" style="margin-left: 20px; margin-top: 20px;">Click this to add symptom2</button>
+  <div id="myDropdown2" class="dropdown-content" style="overflow-y: scroll;height: 300px;">
+    <input class="sticky" type="text" placeholder="Search for symptom" id="myInput2" onkeyup="filterFunction()">
+    <!-- <select class="js-example-basic-single" name="symptom" onclick="check_disease(this.value)"> -->
+    {% for symptom in symptoms %}
+    <a  onclick="check_disease2(this.id)" id="{{symptom}}">{{symptom}}</a>
+    <!-- <option value="{{symptom}}">{{symptom}}</option> -->
+
+    {% endfor %}
+  </div>
+  <div class="input-group-text" id="btnGroupAddon2" style="margin-top: 20px;margin-left: 20px;">Symptom2:</div>
+  </div>
+  <div class="row">
+    <button onclick="myFunction3()" class="dropbtn" style="margin-left: 20px; margin-top: 20px;">Click this to add symptom3</button>
+    <div id="myDropdown3" class="dropdown-content" style="overflow-y: scroll;height: 300px;">
+      <input class="sticky" type="text" placeholder="Search for symptom" id="myInput3" onkeyup="filterFunction()">
+      <!-- <select class="js-example-basic-single" name="symptom" onclick="check_disease(this.value)"> -->
+      {% for symptom in symptoms %}
+      <a  onclick="check_disease3(this.id)" id="{{symptom}}">{{symptom}}</a>
+      <!-- <option value="{{symptom}}">{{symptom}}</option> -->
+  
+      {% endfor %}
+    </div>
+    <div class="input-group-text" id="btnGroupAddon3" style="margin-top: 20px;margin-left: 20px;">Symptom3:</div>
+    </div>
+    <div class="row">
+      <button onclick="myFunction4()" class="dropbtn" style="margin-left: 20px; margin-top: 20px;">Click this to add symptom4</button>
+      <div id="myDropdown4" class="dropdown-content" style="overflow-y: scroll;height: 300px;">
+        <input class="sticky" type="text" placeholder="Search for symptom" id="myInput4" onkeyup="filterFunction()">
+        <!-- <select class="js-example-basic-single" name="symptom" onclick="check_disease(this.value)"> -->
+        {% for symptom in symptoms %}
+        <a  onclick="check_disease4(this.id)" id="{{symptom}}">{{symptom}}</a>
+        <!-- <option value="{{symptom}}">{{symptom}}</option> -->
+    
+        {% endfor %}
+      </div>
+      <div class="input-group-text" id="btnGroupAddon4" style="margin-top: 20px;margin-left: 20px;">Symptom4:</div>
+      </div>
+  </div>
+      <input class="btn btn-primary" type="submit" value="Predict Disease" onclick="predictdisease()"data-toggle="modal" data-target="#exampleModal" style="margin-left: 30px;margin-top: 20px;width: 500px;">
+
+      <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Predicted Disease</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 id="disease" style="text-decoration: solid;"></h6>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 </div>
 
@@ -728,13 +1088,36 @@ var csrftoken = getCookie('csrftoken');
       function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
+function myFunction2() {
+  document.getElementById("myDropdown2").classList.toggle("show");
+}
+function myFunction3() {
+  document.getElementById("myDropdown3").classList.toggle("show");
+}
+function myFunction4() {
+  document.getElementById("myDropdown4").classList.toggle("show");
+}
 
 function filterFunction() {
   var input, filter, ul, li, a, i;
   input = document.getElementById("myInput");
+  input2 = document.getElementById("myInput2");
+  input3 = document.getElementById("myInput3");
+  input4 = document.getElementById("myInput4");
   filter = input.value.toLowerCase();
+  filter2 = input.value.toLowerCase();
+  filter3 = input.value.toLowerCase();
+  filter4 = input.value.toLowerCase();
+
   div = document.getElementById("myDropdown");
+  div2 = document.getElementById("myDropdown2");
+  div3 = document.getElementById("myDropdown3");
+  div4 = document.getElementById("myDropdown4");
   a = div.getElementsByTagName("option");
+  a2 = div.getElementsByTagName("option");
+  a3 = div.getElementsByTagName("option");
+  a4 = div.getElementsByTagName("option");
+
   for (i = 0; i < a.length; i++) {
     txtValue = a[i].textContent || a[i].innerText;
     if (txtValue.toLowerCase().indexOf(filter) > -1) {
@@ -743,13 +1126,59 @@ function filterFunction() {
       a[i].style.display = "none";
     }
   }
+  for (i = 0; i < a2.length; i++) {
+    txtValue = a2[i].textContent || a2[i].innerText;
+    if (txtValue.toLowerCase().indexOf(filter2) > -1) {
+      a2[i].style.display = "";
+    } else {
+      a2[i].style.display = "none";
+    }
+  }
+  for (i = 0; i < a3.length; i++) {
+    txtValue = a3[i].textContent || a3[i].innerText;
+    if (txtValue.toLowerCase().indexOf(filter3) > -1) {
+      a3[i].style.display = "";
+    } else {
+      a3[i].style.display = "none";
+    }
+  }
+  for (i = 0; i < a4.length; i++) {
+    txtValue = a4[i].textContent || a4[i].innerText;
+    if (txtValue.toLowerCase().indexOf(filter4) > -1) {
+      a4[i].style.display = "";
+    } else {
+      a4[i].style.display = "none";
+    }
+  }
 }
 
+var symptom,symptom2,symptom3,symptom4;
 
-      function check_disease(svalue){
-        document.getElementById("myDropdown").classList.toggle("show");
+function check_disease(svalue){
+  document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("btnGroupAddon").innerHTML="Symptom1:"+ svalue
+  document.getElementById("btnGroupAddon").value=svalue
+}
+function check_disease2(svalue){
+  document.getElementById("myDropdown2").classList.toggle("show");
+  document.getElementById("btnGroupAddon2").innerHTML="Symptom2:"+ svalue
+  document.getElementById("btnGroupAddon2").value=svalue
+}
+function check_disease3(svalue){
+  document.getElementById("myDropdown3").classList.toggle("show");
+  document.getElementById("btnGroupAddon3").innerHTML="Symptom3:"+ svalue
+  document.getElementById("btnGroupAddon3").value=svalue
+}
+function check_disease4(svalue){
+  document.getElementById("myDropdown4").classList.toggle("show");
+  document.getElementById("btnGroupAddon4").innerHTML="Symptom4:"+ svalue
+  document.getElementById("btnGroupAddon4").value=svalue
+}
+      function predictdisease(){
+        // document.getElementById("myDropdown").classList.toggle("show");
+        // document.getElementById("myDropdown2").classList.toggle("show");
         var xhttp;
-        data=svalue;
+        data=[document.getElementById("btnGroupAddon").value,document.getElementById("btnGroupAddon2").value,document.getElementById("btnGroupAddon3").value,document.getElementById("btnGroupAddon4").value];
         console.log(data)
         data=JSON.stringify({disease:data})
         console.log(data)
@@ -800,7 +1229,7 @@ window.onclick = function(event) {
     if (!event.target.matches('.searchbardiv')){
       if (!event.target.matches('.searchbar')){
 
-    var dropdowns = document.getElementsByClassName("drop-content");
+    // var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
       
@@ -911,7 +1340,35 @@ $("#predict").click(function () {
 });
 
     </script>
-  
+  <script>
+    function ecg(){
+      var xhttp;
+      xhttp=new XMLHttpRequest();
+      xhttp.onreadystatechange=function()
+        {
+          if(this.readyState==4 && this.status==200)
+          {
+            console.log("success")
+            ecg_obj=this.responseText
+            var obj=JSON.parse(ecg_obj)
+            document.getElementById("PR").innerHTML="PR:  "+obj['pr']+" BPM"
+            document.getElementById("rr").innerHTML="RR:  "+obj['rr']+" BPM"
+            document.getElementById("Heart_rate").innerHTML="Heart_rate:  "+obj['Heart_rate']+" BPM"
+            document.getElementById("rMSSD").innerHTML="rMSSD:  "+obj['RMSSD']+" ms"
+            document.getElementById("NNxx").innerHTML="NNxx:  "+obj['NNxx']+" ms"
+            document.getElementById("pNNxx").innerHTML="pNNxx:  "+obj['pNNxx']+" ms"
+            document.getElementById("LF").innerHTML="LF:  "+obj['LF']+" Hz"
+            document.getElementById("HF").innerHTML="HF:  "+obj['HF']+" Hz"
+            document.getElementById("LF_HF").innerHTML="LF/HF:  "+obj['LF_HF']+" ms"
+
+
+          }
+        };
+        xhttp.open("GET",'ecgrequest');
+        // xhttp.setRequestHeader('X-CSRFToken', csrftoken);
+        xhttp.send()
+    }
+  </script>
 
 
 
