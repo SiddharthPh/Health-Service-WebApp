@@ -190,12 +190,22 @@
       </div>
       <div class="col-sm-6">
         <div class="card">
-          <ul class="list-group list-group-flush">
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
           </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for temp in temp %}
+            <li class="list-group-item" id="{{date}}">{{temp}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
         </div>
       </div>
       
@@ -212,12 +222,22 @@
       </div>
       <div class="col-sm-6">
         <div class="card">
-          <ul class="list-group list-group-flush">
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
           </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for bmi in bmi %}
+            <li class="list-group-item" id="{{date}}">{{bmi}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
         </div>
       </div>
       
@@ -234,12 +254,29 @@
       </div>
       <div class="col-sm-6">
         <div class="card">
-          <ul class="list-group list-group-flush">
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
           </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for bps in bps %}
+            <li class="list-group-item" id="{{date}}">{{bps}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul class="list-group">
+                {% for bpd in bpd %}
+                <li class="list-group-item" id="{{date}}">{{bpd}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+        </div>
         </div>
       </div>
       
@@ -256,12 +293,22 @@
       </div>
       <div class="col-sm-6">
         <div class="card">
-          <ul class="list-group list-group-flush">
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
-          <li class="list-group-item"></li>
+          <div class="row">
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for date in date %}
+            <li class="list-group-item" id="{{date}}">{{date}}</li>
+            {% endfor %}
           </ul>
+            </div>
+            <div class="col-sm-4">
+          <ul class="list-group">
+            {% for sc in sc %}
+            <li class="list-group-item" id="{{date}}">{{sc}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+        </div>
         </div>
       </div>
       
@@ -272,18 +319,28 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="card">
-              <span style="text-align:center;">SC</span>
+              <span style="text-align:center;">Pulse</span>
             <canvas class="my-4 w-100" id="myChart_pulse" width="90%" height="25%"></canvas> 
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
-              <ul class="list-group list-group-flush">
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
+              <div class="row">
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for date in date %}
+                <li class="list-group-item" id="{{date}}">{{date}}</li>
+                {% endfor %}
               </ul>
+                </div>
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for pulse in pulse %}
+                <li class="list-group-item" id="{{date}}">{{pulse}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+            </div>
             </div>
           </div>
           
@@ -294,18 +351,28 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="card">
-              <span style="text-align:center;">SC</span>
+              <span style="text-align:center;">Oxygen Saturation</span>
             <canvas class="my-4 w-100" id="myChart_o2" width="90%" height="25%"></canvas> 
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
-              <ul class="list-group list-group-flush">
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
+              <div class="row">
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for date in date %}
+                <li class="list-group-item" id="{{date}}">{{date}}</li>
+                {% endfor %}
               </ul>
+                </div>
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for o2 in o2 %}
+                <li class="list-group-item" id="{{date}}">{{o2}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+            </div>
             </div>
           </div>
           
@@ -316,18 +383,28 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="card">
-              <span style="text-align:center;">SC</span>
+              <span style="text-align:center;">Respiration Rate</span>
             <canvas class="my-4 w-100" id="myChart_res" width="90%" height="25%"></canvas> 
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
-              <ul class="list-group list-group-flush">
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
+              <div class="row">
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for date in date %}
+                <li class="list-group-item" id="{{date}}">{{date}}</li>
+                {% endfor %}
               </ul>
+                </div>
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for rr in rr %}
+                <li class="list-group-item" id="{{date}}">{{rr}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+            </div>
             </div>
           </div>
           
@@ -387,17 +464,28 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="card">
-              <span style="text-align:center;">SC</span>
+              <span style="text-align:center;">HB</span>
             <canvas class="my-4 w-100" id="myChart_hb" width="90%" height="25%"></canvas> 
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
-              <ul class="list-group list-group-flush">
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item"></li>
+              <div class="row">
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for date in date %}
+                <li class="list-group-item" id="{{date}}">{{date}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+                <div class="col-sm-4">
+              <ul class="list-group">
+                {% for hb in hb %}
+                <li class="list-group-item" id="{{date}}">{{hb}}</li>
+                {% endfor %}
+              </ul>
+                </div>
+            </div>
               </ul>
             </div>
           </div>

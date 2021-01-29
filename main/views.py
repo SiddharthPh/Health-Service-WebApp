@@ -288,6 +288,16 @@ def doctor_home(request):
         'appointment_obj':appointment_obj,
         'patient_obj':patient_obj,
         'medical_history_obj':medical_history_obj,
+        'date':list_date,
+        'temp':list_temp,
+        'bmi':list_bmi,
+        'sc':list_sc,
+        'pulse':list_pulse,
+        'o2':list_o2,
+        'rr':list_rr,
+        'hb':list_hb,
+        'bpd':list_bpd,
+        'bps':list_bps,
     }
     return render(request,'main/doctor_home.html',context)
 
@@ -563,7 +573,7 @@ line_chart_json = LineChartJSONView.as_view()
 class LineChartJSONViewbmi(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
@@ -571,7 +581,7 @@ class LineChartJSONViewbmi(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(15,28) for x in range(7)],
+        return [list_bmi,
                 [18 for x in range(7)],
                 [24 for x in range(7)]]
     def get_colors(self):
@@ -610,7 +620,7 @@ bmi_chart_json = LineChartJSONViewbmi.as_view()
 class LineChartJSONViewbp(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
@@ -618,8 +628,8 @@ class LineChartJSONViewbp(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(80,140) for x in range(7)],
-                [randint(60,90) for x in range(7)]]
+        return [list_bps,
+                list_bpd]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
@@ -658,16 +668,15 @@ bp_chart_json = LineChartJSONViewbp.as_view()
 class LineChartJSONViewsc(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["Systolic","Diastolic"]
+        return ["SC"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(80,140) for x in range(7)],
-                [randint(60,90) for x in range(7)]]
+        return [list_sc]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
@@ -677,7 +686,7 @@ class LineChartJSONViewsc(BaseLineChartView):
         # return default_opt
     def get_datasets(self):
         datasets=[]
-        color_generator = [(122, 159, 191),(122, 159, 191)]
+        color_generator = [(122, 159, 191)]
         data = self.get_data()
         providers = self.get_providers()
         num = len(providers)
@@ -707,16 +716,15 @@ sc_chart_json = LineChartJSONViewsc.as_view()
 class LineChartJSONViewpulse(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["Systolic","Diastolic"]
+        return ["Pulse"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(80,140) for x in range(7)],
-                [randint(60,90) for x in range(7)]]
+        return [list_pulse]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
@@ -726,7 +734,7 @@ class LineChartJSONViewpulse(BaseLineChartView):
         # return default_opt
     def get_datasets(self):
         datasets=[]
-        color_generator = [(122, 159, 191),(122, 159, 191)]
+        color_generator = [(122, 159, 191)]
         data = self.get_data()
         providers = self.get_providers()
         num = len(providers)
@@ -755,15 +763,15 @@ pulse_chart_json = LineChartJSONViewpulse.as_view()
 class LineChartJSONViewo2(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["ECG"]
+        return ["O2"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(80,140) for x in range(7)]]
+        return [list_o2]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
@@ -801,15 +809,15 @@ o2_chart_json = LineChartJSONViewo2.as_view()
 class LineChartJSONViewrr(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["ECG"]
+        return ["RR"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(80,140) for x in range(7)]]
+        return [list_rr]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
@@ -847,7 +855,7 @@ rr_chart_json = LineChartJSONViewrr.as_view()
 class LineChartJSONViewecg(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
@@ -894,17 +902,15 @@ ecg_chart_json = LineChartJSONViewecg.as_view()
 class LineChartJSONViewhb(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
+        return list_date
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["BMI","BMI_low","BMI_high"]
+        return ["HB"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        return [[randint(15,28) for x in range(7)],
-                [18 for x in range(7)],
-                [24 for x in range(7)]]
+        return [list_hb]
     def get_colors(self):
         return next_color()
     # def get_dataset_options(self):
