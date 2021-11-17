@@ -1,4 +1,4 @@
-# SDN_Intern
+# Sensordropsnetwork Pvt.Ltd- Internship
 -My winter internship between December 2020 to January 2021.
 ## Project Description
 1. A health care service web app, consisting of an interface for patients, doctors, and physicians.
